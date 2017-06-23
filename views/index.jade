@@ -1,0 +1,57 @@
+extends layout
+
+block content
+    .mdui-toolbar.mdui-color-theme.mdui-shadow-5
+        span.mdui-typo-title OFO密码共享
+    form#addForm(action='/add', method='POST')
+        .mdui-dialog#addDialog
+            .mdui-dialog-title 分享密码
+            .mdui-dialog-content
+                .mdui-textfield.mdui-textfield-floating-label
+                    label.mdui-textfield-label 车牌号
+                    input.mdui-textfield-input(type='text',name='number')
+                    label.mdui-textfield-label 密码
+                    input.mdui-textfield-input(type='text',name='pwd')
+            .mdui-dialog-actions
+                button.mdui-btn.mdui-ripple(type='button',mdui-dialog-close) 取消
+                button.mdui-btn.mdui-ripple(type='submit') 提交
+
+    .mdui-container
+        br
+        .mdui-row.mdui-valign
+            .mdui-col-xs-12.mdui-center
+                p 本系统用于共享ofo小黄车密码，欢迎大家在使用本系统未收录的小黄车时能花一分钟时间分享密码
+        .mdui-row.mdui-valign
+            form.mdui-col-xs-12.mdui-center(action='/' method='get')
+                .mdui-textfield.mdui-textfield-floating-label
+                    label.mdui-textfield-label 车牌号
+                    input.mdui-textfield-input(type='text',name='key')
+                button.mdui-btn.mdui-btn-block.mdui-btn-raised.mdui-color-blue(type='submit') 搜索
+        .mdui-row.mdui-valign
+            .mdui-col-xs-10
+                h3= listTitle
+        .mdui-row
+            .mdui-col-xs-12
+                if listTitle == '最近收录'
+                    for item in data
+                        a.mdui-chip.mdui-m-l-2(href='/?key=#{item.number}')
+                            span.mdui-chip-icon.mdui-color-blue
+                                i.mdui-icon.material-icons &#xe52f;
+                            span.mdui-chip-title #{item.number}
+                    else
+                        p.mdui-center 没有数据
+                else
+                    ul.mdui-list
+                        for item in data
+                            li.mdui-list-item
+                                i.mdui-list-item-icon.mdui-icon.material-icons &#xe52f;
+                                .mdui-list-item-content
+                                    span.mdui-list-item-title 车牌号：#{item.number}
+                                    span.mdui-list-item-text.mdui-list-item-one-line 密码：#{item.pwd}
+                        else
+                            p.mdui-center 没有数据
+
+    a.mdui-fab.mdui-fab-fixed.mdui-ripple.mdui-color-theme-accent(mdui-dialog='{target:"#addDialog"}')
+        i.mdui-icon.material-icons &#xe145;
+block js
+    script(src='/js/home.core.js')
